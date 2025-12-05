@@ -54,7 +54,7 @@ addTodoForm.addEventListener("submit", (evt) => {
   date.setMinutes(date.getMinutes() + date.getTimezoneOffset());
 
   const todoData = {
-    id:uuidv4(),
+    id: uuidv4(),
     name,
     date,
     completed: false,
@@ -64,7 +64,7 @@ addTodoForm.addEventListener("submit", (evt) => {
   todosList.append(todo.getView());
 
   closeModal(addTodoPopup);
-};
+});
 
 initialTodos.forEach((item) => {
   const todo = new Todo(item, "#todo-template");
