@@ -14,4 +14,4 @@ Tech used in this project: JavaScript, ES6, Git, and AI tools like; Claude & Co-
 
 This project is deployed on GitHub Pages:
 
-- [https://github.com/Noa-GH/se_project_todo-app]
+- [https://noa-gh.github.io/se_project_todo-app/]
