@@ -1,26 +1,12 @@
 import { v4 as uuidv4 } from "https://jspm.dev/uuid";
-uuidv4();
-
-import { initialTodos } from "../utils/constants.js";
-
 import FormValidator from "../components/FormValidator.js";
-
 import Todo from "../components/Todo.js";
-
-const validationConfig = {
-  formSelector: ".popup__form",
-  inputSelector: ".popup__input",
-  submitButtonSelector: ".popup__button",
-  errorClass: "popup__error_visible",
-  inputErrorClass: "popup__input_type_error",
-  inactiveButtonClass: "button_disabled",
-};
+import { initialTodos, validationConfig } from "../utils/constants.js";
 
 const addTodoButton = document.querySelector(".button_action_add");
 const addTodoPopup = document.querySelector("#add-todo-popup");
 const addTodoForm = addTodoPopup.querySelector(".popup__form");
 const addTodoCloseBtn = addTodoPopup.querySelector(".popup__close");
-const todoTemplate = document.querySelector("#todo-template");
 const todosList = document.querySelector(".todos__list");
 
 const FormValidatorInstance = new FormValidator(validationConfig, addTodoForm);
@@ -32,8 +18,6 @@ const openModal = (modal) => {
 
 const closeModal = (modal) => {
   modal.classList.remove("popup_visible");
-  addTodoForm.requestFullscreen();
-  formValidatorInstance.resetValidation();
 };
 
 addTodoButton.addEventListener("click", () => {
@@ -63,13 +47,19 @@ addTodoForm.addEventListener("submit", (evt) => {
   const todo = new Todo(todoData, "#todo-template");
   todosList.append(todo.getView());
 
-  closeModal(addTodoPopup);
+
+  // This method needs to be looked at
+  // Prettier doesn't like the formatting here
+  resetValidation() {
+    this._formElement.reset();
+    this._inputList.forEach((inputElement) => {
+      this._hideInputError(inputElement);
+    });
+    this._toggleButtonState();
+  }
 });
 
-initialTodos.forEach((item) => {
-  const todo = new Todo(item, "#todo-template");
-  todosList.append(todo.getView());
-});
+initialTodos();
 
 //// The logic in this function should all be handled in the Todo class.//
 // const generateTodo = (data) => {

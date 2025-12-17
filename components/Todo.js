@@ -51,3 +51,5 @@ class Todo {
     return this._element;
   }
 }
+
+export default Todo;
