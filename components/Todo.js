@@ -8,9 +8,8 @@ class Todo {
     this._todoCheckboxEl = this._element.querySelector(".todo__completed");
     this._todoLabel = this._element.querySelector(".todo__label");
     this._todoDate = this._element.querySelector(".todo__date");
-    this._todoDeleteBtn = this._element.querySelector(".todo__delete-btn");
-    // Set up the todo content and event listeners
-    this._setEventListeners();
+
+    // Populate the todo content
     this._populateTodo();
   }
 
@@ -19,15 +18,8 @@ class Todo {
     return template.content.querySelector(".todo").cloneNode(true);
   }
 
-  _setEventListeners() {
-    this._todoDeleteBtn.addEventListener("click", () => {
-      this._element.remove();
-    });
-  }
-
   _populateTodo() {
     this._todoNameEl.textContent = this._data.name;
-
     this._todoCheckboxEl.checked = this._data.completed;
 
     // Set id and for attributes

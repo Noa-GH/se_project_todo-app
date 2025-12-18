@@ -1,3 +1,4 @@
+// Initial data for todos
 export const initialTodos = [
   {
     id: "7cec7373-681b-49d9-b065-021d61a69d03",
@@ -19,6 +20,7 @@ export const initialTodos = [
   },
 ];
 
+// Configuration for form validation
 export const validationConfig = {
   formSelector: ".popup__form",
   inputSelector: ".popup__input",
@@ -27,8 +29,3 @@ export const validationConfig = {
   inputErrorClass: "popup__input_type_error",
   inactiveButtonClass: "button_disabled",
 };
-
-initialTodos.forEach((item) => {
-  const todo = new Todo(item, "#todo-template");
-  todosList.append(todo.getView());
-});

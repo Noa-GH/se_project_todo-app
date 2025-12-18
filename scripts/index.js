@@ -1,22 +1,30 @@
 // Imports from external libraries and internal modules
-
 import { v4 as uuidv4 } from "https://jspm.dev/uuid";
 import FormValidator from "../components/FormValidator.js";
-import Todo from "../components/Todo.js";
+import TodoList from "../components/TodoList.js";
 import { initialTodos, validationConfig } from "../utils/constants.js";
 
 // DOM Elements
-
 const addTodoButton = document.querySelector(".button_action_add");
 const addTodoPopup = document.querySelector("#add-todo-popup");
 const addTodoForm = addTodoPopup.querySelector(".popup__form");
 const addTodoCloseBtn = addTodoPopup.querySelector(".popup__close");
-const todosList = document.querySelector(".todos__list");
-const FormValidatorInstance = new FormValidator(validationConfig, addTodoForm);
-FormValidatorInstance.enableValidation();
+
+// Initialize form validator
+const formValidator = new FormValidator(validationConfig, addTodoForm);
+formValidator.enableValidation();
+
+// Initialize todo list manager
+const todoList = new TodoList({
+  todos: initialTodos,
+  containerSelector: ".todos__list",
+  counterSelector: ".counter__text",
+});
+
+// Render initial todos
+todoList.renderItems();
 
 // Functions to open and close modals
-
 const openModal = (modal) => {
   modal.classList.add("popup_visible");
 };
@@ -26,7 +34,6 @@ const closeModal = (modal) => {
 };
 
 // Event Listeners
-
 addTodoButton.addEventListener("click", () => {
   openModal(addTodoPopup);
 });
@@ -37,6 +44,7 @@ addTodoCloseBtn.addEventListener("click", () => {
 
 addTodoForm.addEventListener("submit", (evt) => {
   evt.preventDefault();
+
   const name = evt.target.name.value;
   const dateInput = evt.target.date.value;
 
@@ -51,15 +59,11 @@ addTodoForm.addEventListener("submit", (evt) => {
     completed: false,
   };
 
-  const todo = new Todo(todoData, "#todo-template");
-  todosList.append(todo.getView());
+  // Add the new todo
+  todoList.addTodo(todoData);
 
-  // resetValidation() {
-  //   this._formElement.reset();
-  //   this._inputList.forEach((inputElement) => {
-  //     this._hideInputError(inputElement);
-  //   });
-  //   this._toggleButtonState();
-  // }
-  
-// initialTodos();
+  // Reset form and close modal
+  addTodoForm.reset();
+  formValidator.resetValidation();
+  closeModal(addTodoPopup);
+});
