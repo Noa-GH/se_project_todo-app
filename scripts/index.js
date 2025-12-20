@@ -1,5 +1,10 @@
 // Imports from external libraries and internal modules
 import { v4 as uuidv4 } from "https://jspm.dev/uuid";
+import Section from "../components/Section.js";
+import Popup from "../components/Popup.js";
+import PopupWithForm from "../components/PopupWithForm.js";
+import TodoCounter from "../components/TodoCounter.js";
+import Todo from "../components/Todo.js";
 import FormValidator from "../components/FormValidator.js";
 import TodoList from "../components/TodoList.js";
 import { initialTodos, validationConfig } from "../utils/constants.js";
@@ -9,6 +14,21 @@ const addTodoButton = document.querySelector(".button_action_add");
 const addTodoPopup = document.querySelector("#add-todo-popup");
 const addTodoForm = addTodoPopup.querySelector(".popup__form");
 const addTodoCloseBtn = addTodoPopup.querySelector(".popup__close");
+//TODO  Define the necessary selectors and handlers for the components
+
+const todos = initialTodos;
+const selector = ".counter__text";
+const containerSelector = ".todos__list";
+const popupSelector = "#add-todo-popup";
+
+const todoCounter = new TodoCounter(todos, selector);
+
+console.log("Selector:", selector);
+console.log("Todos:", todos);
+console.log("Container Selector:", containerSelector);
+const section = new Section((items, renderer), containerSelector);
+const popup = new Popup(popupSelector);
+const popupWithForm = new PopupWithForm({ formSubmitHandler, popupSelector });
 
 // Initialize form validator
 const formValidator = new FormValidator(validationConfig, addTodoForm);
