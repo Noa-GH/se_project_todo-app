@@ -1,32 +1,42 @@
 import Todo from "./Todo.js";
 
 class TodoList {
-  constructor({ todos, containerSelector, counterSelector }) {
+  constructor({ todos, todoCounter }) {
     this._todos = todos;
-    this._container = document.querySelector(containerSelector);
-    this._counter = document.querySelector(counterSelector);
+    this._todoCounter = todoCounter; // Store the TodoCounter instance
   }
 
   // Add a new todo to the list
   addTodo(todoData) {
-    const todoElement = this._createTodoElement(todoData);
-    this._container.prepend(todoElement);
-    this._updateCounter();
+    // Add to data array
+    this._todos.push(todoData);
+    this._todoCounter.updateTotal(true); // Increment total
+
+    return this._createTodoElement(todoData);
   }
 
   // Remove a todo from the list
   _handleDeleteTodo(todoId) {
+    const todo = this._todos.find((t) => t.id === todoId);
+
     // Remove from data array
-    this._todos = this._todos.filter((todo) => todo.id !== todoId);
-    this._updateCounter();
+    this._todos = this._todos.filter((t) => t.id !== todoId);
+
+    // Update counter
+    if (todo.completed) {
+      this._todoCounter.updateCompleted(false); // Decrement completed
+    }
+    this._todoCounter.updateTotal(false); // Decrement total
   }
 
   // Toggle todo completion status
   _handleToggleTodo(todoId) {
-    const todo = this._todos.find((todo) => todo.id === todoId);
+    const todo = this._todos.find((t) => t.id === todoId);
     if (todo) {
       todo.completed = !todo.completed;
-      this._updateCounter();
+
+      // Update counter
+      this._todoCounter.updateCompleted(todo.completed); // true = increment, false = decrement
     }
   }
 
@@ -49,22 +59,6 @@ class TodoList {
     });
 
     return todoElement;
-  }
-
-  // Update the counter text
-  _updateCounter() {
-    const completedCount = this._todos.filter((todo) => todo.completed).length;
-    const totalCount = this._todos.length;
-    this._counter.textContent = `Showing ${completedCount} out of ${totalCount} completed`;
-  }
-
-  // Render all initial todos
-  renderItems() {
-    this._todos.forEach((todoData) => {
-      const todoElement = this._createTodoElement(todoData);
-      this._container.append(todoElement);
-    });
-    this._updateCounter();
   }
 }
 
