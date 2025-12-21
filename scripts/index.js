@@ -14,54 +14,46 @@ const addTodoButton = document.querySelector(".button_action_add");
 const addTodoPopup = document.querySelector("#add-todo-popup");
 const addTodoForm = addTodoPopup.querySelector(".popup__form");
 const addTodoCloseBtn = addTodoPopup.querySelector(".popup__close");
-//TODO  Define the necessary selectors and handlers for the components
 
-const todos = initialTodos;
-const selector = ".counter__text";
-const containerSelector = ".todos__list";
-const popupSelector = "#add-todo-popup";
+// Initialize TodoCounter first (it just displays, doesn't need other components)
+const todoCounter = new TodoCounter(initialTodos, ".counter__text");
 
-const todoCounter = new TodoCounter(todos, selector);
+// Initialize TodoList (it manages data and uses TodoCounter)
+const todoList = new TodoList({
+  todos: initialTodos,
+  todoCounter: todoCounter, // Pass TodoCounter to TodoList
+});
 
-console.log("Selector:", selector);
-console.log("Todos:", todos);
-console.log("Container Selector:", containerSelector);
-const section = new Section((items, renderer), containerSelector);
-const popup = new Popup(popupSelector);
-const popupWithForm = new PopupWithForm({ formSubmitHandler, popupSelector });
+// Initialize Section (it handles rendering)
+const section = new Section({
+  items: initialTodos,
+  renderer: (todoData) => {
+    // This function creates a todo element with all event listeners
+    return todoList._createTodoElement(todoData);
+  },
+  containerSelector: ".todos__list",
+});
+
+// Render initial todos on page load
+section.renderItems();
 
 // Initialize form validator
 const formValidator = new FormValidator(validationConfig, addTodoForm);
 formValidator.enableValidation();
 
-// Initialize todo list manager
-const todoList = new TodoList({
-  todos: initialTodos,
-  containerSelector: ".todos__list",
-  counterSelector: ".counter__text",
-});
+// Initialize popup (we'll use this instead of manual openModal/closeModal)
+const addTodoPopupInstance = new Popup("#add-todo-popup");
 
-// Render initial todos
-todoList.renderItems();
-
-// Functions to open and close modals
-const openModal = (modal) => {
-  modal.classList.add("popup_visible");
-};
-
-const closeModal = (modal) => {
-  modal.classList.remove("popup_visible");
-};
-
-// Event Listeners
+// Event Listeners for opening/closing modal
 addTodoButton.addEventListener("click", () => {
-  openModal(addTodoPopup);
+  addTodoPopupInstance.open();
 });
 
 addTodoCloseBtn.addEventListener("click", () => {
-  closeModal(addTodoPopup);
+  addTodoPopupInstance.close();
 });
 
+// Form submit handler
 addTodoForm.addEventListener("submit", (evt) => {
   evt.preventDefault();
 
@@ -79,11 +71,14 @@ addTodoForm.addEventListener("submit", (evt) => {
     completed: false,
   };
 
-  // Add the new todo
-  todoList.addTodo(todoData);
+  // Add the new todo (TodoList updates counter, returns element)
+  const newTodoElement = todoList.addTodo(todoData);
+
+  // Section adds element to DOM
+  section.addItem(newTodoElement);
 
   // Reset form and close modal
   addTodoForm.reset();
   formValidator.resetValidation();
-  closeModal(addTodoPopup);
+  addTodoPopupInstance.close();
 });
