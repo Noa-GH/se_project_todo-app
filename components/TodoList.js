@@ -11,8 +11,10 @@ class TodoList {
     // Add to data array
     this._todos.push(todoData);
     this._todoCounter.updateTotal(true); // Increment total
-
-    return this._createTodoElement(todoData);
+    if (todoData.completed) {
+      this._todoCounter.updateCompleted(true); // Increment completed
+    }
+    return this.createTodoElement(todoData);
   }
 
   // Remove a todo from the list
@@ -41,7 +43,7 @@ class TodoList {
   }
 
   // Create a single todo element with event handlers
-  _createTodoElement(todoData) {
+  createTodoElement(todoData) {
     const todo = new Todo(todoData, "#todo-template");
     const todoElement = todo.getView();
 

@@ -23,16 +23,14 @@ const todoList = new TodoList({
   todos: initialTodos,
   todoCounter: todoCounter, // Pass TodoCounter to TodoList
 });
-
 // Initialize Section (it handles rendering)
-const section = new Section({
-  items: initialTodos,
-  renderer: (todoData) => {
-    // This function creates a todo element with all event listeners
-    return todoList._createTodoElement(todoData);
+const section = new Section(
+  initialTodos,
+  (todoData) => {
+    return todoList.createTodoElement(todoData);
   },
-  containerSelector: ".todos__list",
-});
+  ".todos__list"
+);
 
 // Render initial todos on page load
 section.renderItems();
