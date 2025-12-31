@@ -1,16 +1,20 @@
 class Todo {
-  constructor(data, templateSelector) {
+  constructor(data, templateSelector, handleCheck, handleDelete) {
     this._data = data;
     this._templateSelector = templateSelector;
     this._dueDate = new Date(data.date);
+    this._handleCheck = handleCheck;
+    this._handleDelete = handleDelete;
+
     this._element = this._getTemplate();
     this._todoNameEl = this._element.querySelector(".todo__name");
     this._todoCheckboxEl = this._element.querySelector(".todo__completed");
     this._todoLabel = this._element.querySelector(".todo__label");
     this._todoDate = this._element.querySelector(".todo__date");
+    this._deleteBtn = this._element.querySelector(".todo__delete-btn");
 
-    // Populate the todo content
     this._populateTodo();
+    this._setEventListeners();
   }
 
   _getTemplate() {
@@ -22,11 +26,9 @@ class Todo {
     this._todoNameEl.textContent = this._data.name;
     this._todoCheckboxEl.checked = this._data.completed;
 
-    // Set id and for attributes
     this._todoCheckboxEl.id = `todo-${this._data.id}`;
     this._todoLabel.setAttribute("for", `todo-${this._data.id}`);
 
-    // Set due date if it exists
     if (!isNaN(this._dueDate)) {
       this._todoDate.textContent = `Due: ${this._dueDate.toLocaleString(
         "en-US",
@@ -37,6 +39,30 @@ class Todo {
         }
       )}`;
     }
+  }
+
+  _setEventListeners() {
+    // Checkbox change event
+    this._todoCheckboxEl.addEventListener("change", () => {
+      this._data.completed = this._todoCheckboxEl.checked;
+      this._handleCheck(this._data.completed);
+    });
+
+    // Delete button event (if exists)
+    if (this._deleteBtn) {
+      this._deleteBtn.addEventListener("click", () => {
+        this._handleDelete(this._data.id);
+      });
+    }
+  }
+
+  // Method to remove element from DOM
+  remove() {
+    this._element.remove();
+  }
+
+  getId() {
+    return this._data.id;
   }
 
   getView() {
