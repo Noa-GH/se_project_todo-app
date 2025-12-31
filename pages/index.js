@@ -74,8 +74,8 @@ const addTodoPopupInstance = new PopupWithForm(
     const newTodoElement = createTodoElement(todoData);
     section.addItem(newTodoElement);
 
-    // Update counter
-    todoCounter.updateCompleted(false);
+    // Update counter - increment total when adding a new todo
+    todoCounter.updateTotal(true);
 
     addTodoPopupInstance.close();
   }
