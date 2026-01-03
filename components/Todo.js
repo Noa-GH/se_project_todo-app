@@ -56,6 +56,10 @@ class Todo {
     }
   }
 
+  isCompleted() {
+    return this._data.completed;
+  }
+
   // Method to remove element from DOM
   remove() {
     this._element.remove();

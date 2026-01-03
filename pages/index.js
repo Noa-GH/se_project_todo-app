@@ -17,28 +17,27 @@ let todos = [...initialTodos];
 // Initialize TodoCounter
 const todoCounter = new TodoCounter(todos, ".counter__text");
 
+function handleTodoDelete(todoItem) {
+  const todoIndex = todos.findIndex((t) => t.id === todoItem.getId());
+  if (todoIndex, 1);
+  const wasCompleted = todoItem.isCompleted();
+  todos.splice(todoIndex, 1);
+  todoCounter.updateTotal(false);
+  if (wasCompleted) {
+    todoCounter.updateCompleted(false);
+  }
+  todoItem.remove();
+}
+
 // Function to create a todo element
 function createTodoElement(todoData) {
   const todo = new Todo(
     todoData,
     "#todo-template",
-    // Handle checkbox change
     (isChecked) => {
       todoCounter.updateCompleted(isChecked);
     },
-    // Handle delete
-    (id) => {
-      const todoIndex = todos.findIndex((t) => t.id === id);
-      if (todoIndex !== -1) {
-        const wasCompleted = todos[todoIndex].completed;
-        todos.splice(todoIndex, 1);
-        todoCounter.updateTotal(false);
-        if (wasCompleted) {
-          todoCounter.updateCompleted(false);
-        }
-        todo.remove();
-      }
-    }
+    () => handleTodoDelete(todo)
   );
 
   return todo.getView();
@@ -69,6 +68,9 @@ const addTodoPopupInstance = new PopupWithForm(
 
     // Add to todos array
     todos.push(todoData);
+    
+    // Reset form validation when adding a new todo
+    formValidator.resetValidation();
 
     // Create and add element
     const newTodoElement = createTodoElement(todoData);
@@ -85,6 +87,5 @@ addTodoPopupInstance.setEventListeners();
 
 // Open popup button
 addTodoButton.addEventListener("click", () => {
-  formValidator.resetValidation();
   addTodoPopupInstance.open();
 });
