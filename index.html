@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Simple ToDo App</title>
-    <link rel="stylesheet" href="./pages/index.css" />
+    <link rel="stylesheet" href="./pages/index.css" >
   </head>
 
   <body>
@@ -13,7 +13,7 @@
         <header class="header">
           <h1 class="header__title">The Simple ToDo App</h1>
           <p class="header__banner">Do these things</p>
-          <button class="button button_action_add header__button">
+          <button type="button" class="button button_action_add header__button">
             + Add Todo
           </button>
           <div class="popup" id="add-todo-popup">
@@ -42,7 +42,7 @@
                       placeholder="Write here"
                       required
                       type="text"
-                    />
+                    >
                     <span class="popup__error" id="todo-name-error"></span>
                   </label>
                   <label class="popup__label" for="todo-date">
@@ -54,7 +54,7 @@
                       type="date"
                       min="2023-01-01"
                       max="3000-12-31"
-                    />
+                    >
                     <span class="popup__error" id="todo-date-error"></span>
                   </label>
                 </fieldset>
@@ -73,8 +73,8 @@
             <ul class="todos__list">
               <template id="todo-template">
                 <li class="todo">
-                  <label class="todo__label" for="">
-                    <input class="todo__completed" id="" type="checkbox" />
+                  <label class="todo__label" >
+                    <input class="todo__completed" type="checkbox" >
                     <span class="todo__name"></span>
                     <span class="todo__date"></span>
                   </label>
