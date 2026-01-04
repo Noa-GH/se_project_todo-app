@@ -18,7 +18,7 @@
           </button>
           <div class="popup" id="add-todo-popup">
             <div class="popup__content">
-              <h3 class="popup__title">Add new ToDo</h3>
+              <h2 class="popup__title">Add new ToDo</h2>
               <button
                 aria-label="Close modal"
                 class="popup__close"
@@ -31,7 +31,8 @@
                 novalidate
               >
                 <fieldset class="popup__fieldset">
-                  <label class="popup__label" for="todo-name">
+                  <legend class="popup__legend">ToDo details</legend>
+                  <label class="popup__label">
                     What needs to be done?
                     <input
                       class="popup__input"
@@ -45,7 +46,7 @@
                     >
                     <span class="popup__error" id="todo-name-error"></span>
                   </label>
-                  <label class="popup__label" for="todo-date">
+                  <label class="popup__label">
                     When does it need to be done? (optional)
                     <input
                       class="popup__input popup__input_type_date"
@@ -81,7 +82,9 @@
                   <ul class="todo__buttons">
                     <!-- List is used to support future additional buttons -->
                     <li>
-                      <button class="todo__delete-btn" type="button"></button>
+                      <button class="todo__delete-btn" type="button" aria-label="Delete to-do">
+                        <span class="visually-hidden">Delete</span>
+                      </button>
                     </li>
                   </ul>
                 </li>
